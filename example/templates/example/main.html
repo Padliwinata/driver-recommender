@@ -7,35 +7,30 @@
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-xl-10">
-                <!-- <div class="card" style="border-radius: 1rem;">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            Right-aligned menu
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">Action</button>
-                            <button class="dropdown-item" type="button">Another action</button>
-                            <button class="dropdown-item" type="button">Something else here</button>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="card">
                     <div class="card-body">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                Pilih pegawai
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                {% for pegawai in pegawai_list %}
-                                    
-                                    <a class="dropdown-item" href="#">{{ pegawai.nama }}</a>
+                        <div class="container">
+                            <h2>Skoring Pegawai</h2>
+                            <form action="">
+                                <div class="form-group">
+                                    <label for="name">Nama:</label>
+                                    <select name="nama" id="nama">
+                                        {% for pegawai in pegawai_list %}
+                                        <option value="{{ pegawai.id_pegawai }}">{{ pegawai.nama }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                {% for subvar in subvar_list %}
+                                <div class="form-group">
+                                    <label for="email">{{ subvar.nama }}</label>
+                                    <input type="text" name="subvar" class="form-control" id="email">
+                                </div>
                                 {% endfor %}
-                                <!-- <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a> -->
-                            </div>
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
                         </div>
+
                     </div>
                 </div>
             </div>
