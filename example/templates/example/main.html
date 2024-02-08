@@ -11,10 +11,11 @@
                     <div class="card-body">
                         <div class="container">
                             <h2>Skoring Pegawai</h2>
-                            <form action="">
+                            <form action="{% url 'main' %}" method="POST">
+                                {% csrf_token %}
                                 <div class="form-group">
                                     <label for="name">Nama:</label>
-                                    <select name="nama" id="nama">
+                                    <select name="pegawai" id="nama">
                                         {% for pegawai in pegawai_list %}
                                         <option value="{{ pegawai.id_pegawai }}">{{ pegawai.nama }}</option>
                                         {% endfor %}
@@ -23,7 +24,7 @@
                                 {% for subvar in subvar_list %}
                                 <div class="form-group">
                                     <label for="email">{{ subvar.nama }}</label>
-                                    <input type="text" name="subvar" class="form-control" id="email">
+                                    <input type="text" name="subvar[]" class="form-control" id="email">
                                 </div>
                                 {% endfor %}
 

@@ -1,7 +1,7 @@
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from urllib.parse import urlparse
-from .models import Pegawai, SubVariabel
+from .models import Pegawai, SubVariabel, Skor
 
 
 # Create your views here.
@@ -21,13 +21,27 @@ def login(request):
 
 
 def main(request):
-    refferer_page = request.META.get("HTTP_REFERER", "")
-    referrer_path = urlparse(refferer_page).path
+    if request.method == "GET":
+        referer_page = request.META.get("HTTP_REFERER", "")
+        referrer_path = urlparse(referer_page).path
 
-    if referrer_path != "/example/login":
-        return HttpResponseForbidden("Access Forbidden")
+        if referrer_path != "/example/login" and referrer_path != "/example/main":
+            return HttpResponseForbidden("Access Forbidden")
 
-    pegawai_list = Pegawai.objects.all()
-    subvar_list = SubVariabel.objects.all()
+        pegawai_list = Pegawai.objects.all()
+        subvar_list = SubVariabel.objects.all()
 
-    return render(request, "example/main.html", {'pegawai_list': pegawai_list, 'subvar_list': subvar_list})
+        return render(request, "example/main.html", {'pegawai_list': pegawai_list, 'subvar_list': subvar_list})
+    if request.method == "POST":
+        pegawai = Pegawai.objects.get(pk=request.POST.get('pegawai', ''))
+        subvars = SubVariabel.objects.all()
+        values = request.POST.getlist('subvar[]')
+        for i in range(len(values)):
+            Skor.objects.update_or_create(pegawai=pegawai, sub_variabel=subvars[i], skor=values[i])
+        return redirect("main")
+
+
+def skor(request):
+    if request.method == "GET":
+        pegawais = Pegawai.objects.all()
+        return render(request, "example/skor.html")
