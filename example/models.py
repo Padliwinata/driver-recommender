@@ -24,6 +24,7 @@ class Variabel(models.Model):
 
 class SubVariabel(models.Model):
     kode = models.CharField(max_length=10)
+    variabel = models.ForeignKey(Variabel, on_delete=models.CASCADE, null=True, blank=True)
     nama = models.CharField(max_length=10)
     faktor = models.CharField(
         max_length=10,

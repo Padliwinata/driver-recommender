@@ -11,6 +11,8 @@
                     <div class="card-body">
                         <div class="container">
                             <h2>Skoring Pegawai</h2>
+
+                            <!-- ====   FORM PENGIRIMAN DATA    ==== -->
                             <form action="{% url 'main' %}" method="POST">
                                 {% csrf_token %}
                                 <div class="form-group">
@@ -23,13 +25,19 @@
                                 </div>
                                 {% for subvar in subvar_list %}
                                 <div class="form-group">
+
+                                    <!-- Bagian input skor -->
                                     <label for="email">{{ subvar.nama }}</label>
                                     <input type="text" name="subvar[]" class="form-control" id="email">
+                                    <!-- -->
+
                                 </div>
                                 {% endfor %}
 
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
+                            <!-- ====   FORM PENGIRIMAN DATA    ==== -->
+
                         </div>
 
                     </div>

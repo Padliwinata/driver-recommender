@@ -43,5 +43,35 @@ def main(request):
 
 def skor(request):
     if request.method == "GET":
+        skors = []
+        selisih = []
         pegawais = Pegawai.objects.all()
-        return render(request, "example/skor.html")
+        for pegawai in pegawais:
+            skors.append(Skor.objects.filter(pegawai=pegawai).select_related('sub_variabel'))
+        for x in range(len(pegawais)):
+            print(pegawais[x].nama)
+            temp = []
+            for angka in skors[x]:
+                print(f"{angka.skor}: {angka.sub_variabel.standar}")
+                temp.append(angka.skor - angka.sub_variabel.standar)
+            selisih.append(temp)
+        print(selisih)
+        hasil = []
+        for pegawai in selisih:
+            temp = []
+            for angka in pegawai:
+                if angka == 0:
+                    temp.append(6)
+                elif angka == 1:
+                    temp.append(5.5)
+                elif angka == -1:
+                    temp.append(5)
+                else:
+                    temp.append(4)
+            hasil.append(temp)
+        print(hasil)
+        resp = dict()
+        for i in range(len(pegawais)):
+            resp.update({pegawais[i].nama: hasil[i]})
+        print(resp)
+        return render(request, "example/skor.html", context=resp)
