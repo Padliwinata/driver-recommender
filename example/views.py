@@ -1,7 +1,11 @@
+from collections import defaultdict
+import json
+
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from urllib.parse import urlparse
-from .models import Pegawai, SubVariabel, Skor
+from .models import Pegawai, SubVariabel, Skor, Variabel
+from .utils import get_skor
 
 
 # Create your views here.
@@ -44,34 +48,36 @@ def main(request):
 def skor(request):
     if request.method == "GET":
         skors = []
-        selisih = []
+        data = defaultdict(lambda: defaultdict(dict))
         pegawais = Pegawai.objects.all()
+
+        variabel = Variabel.objects.all()
+
+        nama = None
         for pegawai in pegawais:
             skors.append(Skor.objects.filter(pegawai=pegawai).select_related('sub_variabel'))
+        # print(skors)
         for x in range(len(pegawais)):
-            print(pegawais[x].nama)
-            temp = []
+            # print(pegawais[x].nama)
             for angka in skors[x]:
-                print(f"{angka.skor}: {angka.sub_variabel.standar}")
-                temp.append(angka.skor - angka.sub_variabel.standar)
-            selisih.append(temp)
-        print(selisih)
-        hasil = []
-        for pegawai in selisih:
-            temp = []
-            for angka in pegawai:
-                if angka == 0:
-                    temp.append(6)
-                elif angka == 1:
-                    temp.append(5.5)
-                elif angka == -1:
-                    temp.append(5)
-                else:
-                    temp.append(4)
-            hasil.append(temp)
-        print(hasil)
-        resp = dict()
+                selisih = angka.skor - angka.sub_variabel.standar
+                normal = 6 - abs(selisih) * 0.5
+                if selisih < 0:
+                    normal -= 0.5
+                try:
+                    data[f'{angka.pegawai.nama}'][f'{angka.sub_variabel.variabel.nama}'][
+                        f'{angka.sub_variabel.faktor}'].append(normal)
+                except KeyError:
+                    data[f'{angka.pegawai.nama}'][f'{angka.sub_variabel.variabel.nama}'][
+                        f'{angka.sub_variabel.faktor}'] = [normal]
+
+        portion = [var.persentase for var in variabel]
+
+        res = []
+        for key, value in data.items():
+            res.append(get_skor(value, portion))
+
+        data = dict()
         for i in range(len(pegawais)):
-            resp.update({pegawais[i].nama: hasil[i]})
-        print(resp)
-        return render(request, "example/skor.html", context=resp)
+            data[pegawais[i].nama] = res[i]
+        return render(request, "example/skor.html", {'data': data})

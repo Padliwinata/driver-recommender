@@ -13,25 +13,23 @@
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Second</th>
-                                <th scope="col">Third</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Skor</th>
                             </tr>
                             </thead>
                             <tbody>
-                            
+                            {% for key, value in data.items %}
                             <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
                             </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
+                            {% endfor %}
+                            <!--                            <tr>-->
+                            <!--                                <th scope="row">3</th>-->
+                            <!--                                <td>Larry</td>-->
+                            <!--                                <td>the Bird</td>-->
+                            <!--                            </tr>-->
                             </tbody>
                         </table>
 
