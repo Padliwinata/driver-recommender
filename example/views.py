@@ -80,4 +80,14 @@ def skor(request):
         data = dict()
         for i in range(len(pegawais)):
             data[pegawais[i].nama] = res[i]
-        return render(request, "example/skor.html", {'data': data})
+
+        sorted_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
+        print(sorted_data)
+
+        return render(request, "example/skor.html", {'data': sorted_data})
+
+
+def variabel(request):
+    if request.method == 'GET':
+        variabel_list = Variabel.objects.all()
+        return render(request, 'example/variabel.html', {'data': variabel_list})

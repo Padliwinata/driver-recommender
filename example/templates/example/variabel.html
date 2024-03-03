@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Page with Bootstrap</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Create / Update Record</h2>
+    <form id="crudForm">
+        <div class="form-group">
+            <label for="nama">Nama:</label>
+            <input type="text" class="form-control" id="nama" name="nama" required>
+        </div>
+        <div class="form-group">
+            <label for="faktor">Faktor:</label>
+            <select class="form-control" id="faktor" name="faktor">
+                <option value="SECONDARY">Secondary</option>
+                <option value="PRIMARY">Primary</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="persentase">Persentase:</label>
+            <input type="number" class="form-control" id="persentase" name="persentase" min="0" max="100" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <h2 class="mt-5">Records</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nama</th>
+            <th>Faktor</th>
+            <th>Persentase</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="recordList">
+            
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS (optional, only needed if you want to use Bootstrap JavaScript features) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Function to handle form submission
+    document.getElementById("crudForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get form data
+        var formData = new FormData(this);
+
+        // Construct object from form data
+        var record = {};
+        formData.forEach(function(value, key){
+            record[key] = value;
+        });
+
+        // Send record to server or handle locally (e.g., update UI)
+        console.log("Submitted Record:", record);
+
+        // For simplicity, let's just display the record in the list
+        var recordList = document.getElementById("recordList");
+        var li = document.createElement("li");
+        li.textContent = JSON.stringify(record);
+        li.classList.add("list-group-item");
+        recordList.appendChild(li);
+
+        // Reset form
+        this.reset();
+    });
+    function deleteRecord(row) {
+            row.remove();
+        }
+
+        // Function to handle form submission
+        document.getElementById("crudForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get form data
+            var formData = new FormData(this);
+
+            // Construct object from form data
+            var record = {};
+            formData.forEach(function(value, key){
+                record[key] = value;
+            });
+
+            // Send record to server or handle locally (e.g., update UI)
+            console.log("Submitted Record:", record);
+
+            // For simplicity, let's just display the record in the table
+            var recordList = document.getElementById("recordList");
+            var newRow = recordList.insertRow();
+            newRow.innerHTML = `
+                <td>${record.nama}</td>
+                <td>${record.faktor}</td>
+                <td>${record.persentase}</td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteRecord(this.parentNode.parentNode)">Delete</button>
+                </td>
+            `;
+
+            // Reset form
+            this.reset();
+        });
+</script>
+</body>
+</html>

@@ -51,4 +51,4 @@ class Skor(models.Model):
     skor = models.IntegerField()
 
     def __str__(self) -> str:
-        return self.pegawai.nama
+        return f"{self.pegawai.nama}: {self.sub_variabel.nama}"
