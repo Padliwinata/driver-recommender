@@ -10,32 +10,29 @@
             <h2 class="mt-5">Records</h2>
         </div>
         <div class="col text-right">
-            <a href="{% url 'create-variabel' %}" class="btn btn-primary mt-5">Add</a>
+            <a href="{% url 'create-employee' %}" class="btn btn-primary mt-5">Add</a>
         </div>
     </div>
     <table class="table">
         <thead>
-        <tr>
-            <th>Nama</th>
-            <th>Faktor</th>
-            <th>Persentase</th>
-            <th>Action</th>
-        </tr>
+            <tr>
+                <th>ID Pegawai</th>
+                <th>Nama</th>
+                <th>Action</th>
+            </tr>
         </thead>
         <tbody id="recordList">
-        {% for var in data %}
-        <tr>
-            <td>{{ var.nama }}</td>
-            <td>{{ var.faktor }}</td>
-            <td>{{ var.persentase }}</td>
-            <td>
-                <a href="{% url 'delete-variabel' var.nama %}" class="btn btn-danger btn-sm delete-btn">
-                    Delete
-                </a>
-            </td>
-
-        </tr>
-        {% endfor %}
+            {% for var in data %}
+            <tr>
+                <td>{{ var.id_pegawai }}</td>
+                <td>{{ var.nama }}</td>
+                <td>
+                    <a href="{% url 'delete-employee' var.id_pegawai %}" class="btn btn-danger btn-sm delete-btn">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

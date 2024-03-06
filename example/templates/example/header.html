@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+<nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav" style="padding: 0.5rem 1rem;">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'index' %}">Recommender</a>
+        <a class="navbar-brand" href="{% url 'index' %}" style="font-size: 1.5rem;">Recommender</a>
         <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button"
                 data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -8,22 +8,24 @@
             <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-                <!--                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"-->
-                <!--                        href="#portfolio">Portfolio</a></li>-->
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'skor' %}">Skor</a>
-                </li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
-                                                     href="{% url 'variabel' %}">Variabel</a>
-                </li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'skor' %}">Sub
-                    Variabel</a>
-                </li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'skor' %}">Employee</a>
-                </li>
-                <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contact</a></li> -->
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded"
+            <ul class="navbar-nav ms-auto" style="font-size: 1.2rem;">
+                {% if user.is_authenticated %}
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
+                                                     href="{% url 'variabel' %}">Variabel</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
+                                                     href="{% url 'subvariabel' %}">Sub Variabel</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
+                                                     href="{% url 'employee' %}">Employee</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
+                                                     href="{% url 'main' %}">Mapping</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
+                                                     href="{% url 'skor' %}">Hasil</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
+                                                     href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
                                                      href="{% url 'login' %}">Login</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>

@@ -1,0 +1,55 @@
+{% extends 'example/base.html' %}
+{% load static %}
+
+{% block title %}Recommender{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h2 class="mt-5">Add Record</h2>
+        </div>
+    </div>
+    <form id="addRecordForm" action="{% url 'create-subvariabel' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="kode">Kode:</label>
+            <input type="text" class="form-control" id="kode" name="kode" required>
+        </div>
+
+        <div class="form-group">
+            <label for="variabel">Variabel:</label>
+            <select class="form-control" id="variabel" name="variabel" required>
+                {% for option in data %}
+                    <option value="{{ option.nama }}">{{ option.nama }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="nama">Nama:</label>
+            <input type="text" class="form-control" id="nama" name="nama" required>
+        </div>
+
+        <div class="form-group">
+            <label for="faktor">Faktor:</label>
+            <select class="form-control" id="faktor" name="faktor">
+                <option value="CORE">CORE</option>
+                <option value="SECONDARY">SECONDARY</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="standar">Standar:</label>
+            <input type="text" class="form-control" id="standar" name="standar" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS (optional, only needed if you want to use Bootstrap JavaScript features) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+{% endblock %}
