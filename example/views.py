@@ -57,47 +57,41 @@ def skor(request):
         variabel = Variabel.objects.all()
         subvars = SubVariabel.objects.all()
 
-        nama = None
-        lanjut = True
+        skors = []
         for pegawai in pegawais:
             skor = Skor.objects.filter(pegawai=pegawai).select_related('sub_variabel')
-            if skor.count() != (subvars.count() * pegawais.count()):
-                lanjut = False
-                break
-            else:
-                skors.append(Skor.objects.filter(pegawai=pegawai).select_related('sub_variabel'))
-        if not lanjut:
-            length = 0
-            return render(request, 'example/skor.html', {'length': length, 'data': []})
-        else:
-            # print(skors)
-            for x in range(len(pegawais)):
-                # print(pegawais[x].nama)
-                for angka in skors[x]:
-                    selisih = angka.skor - angka.sub_variabel.standar
-                    normal = 6 - abs(selisih) * 0.5
-                    if selisih < 0:
-                        normal -= 0.5
-                    try:
-                        data[f'{angka.pegawai.nama}'][f'{angka.sub_variabel.variabel.nama}'][
-                            f'{angka.sub_variabel.faktor}'].append(normal)
-                    except KeyError:
-                        data[f'{angka.pegawai.nama}'][f'{angka.sub_variabel.variabel.nama}'][
-                            f'{angka.sub_variabel.faktor}'] = [normal]
+            skors.append(skor)
 
-            portion = [var.persentase for var in variabel]
+        # return render(request, 'example/skor.html', {'length': length, 'data': []})
+        # else:
+        # print(skors)
+        for x in range(len(pegawais)):
+            # print(pegawais[x].nama)
+            for angka in skors[x]:
+                selisih = angka.skor - angka.sub_variabel.standar
+                normal = 6 - abs(selisih) * 0.5
+                if selisih < 0:
+                    normal -= 0.5
+                try:
+                    data[f'{angka.pegawai.nama}'][f'{angka.sub_variabel.variabel.nama}'][
+                        f'{angka.sub_variabel.faktor}'].append(normal)
+                except KeyError:
+                    data[f'{angka.pegawai.nama}'][f'{angka.sub_variabel.variabel.nama}'][
+                        f'{angka.sub_variabel.faktor}'] = [normal]
 
-            res = []
-            for key, value in data.items():
-                res.append(get_skor(value, portion))
+        portion = [var.persentase for var in variabel]
 
-            data = dict()
-            for i in range(len(pegawais)):
-                data[pegawais[i].nama] = res[i]
+        res = []
+        for key, value in data.items():
+            res.append(get_skor(value, portion))
 
-            sorted_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
+        data = dict()
+        for i in range(len(pegawais)):
+            data[pegawais[i].nama] = res[i]
 
-            return render(request, "example/skor.html", {'length': len(sorted_data), 'data': sorted_data})
+        sorted_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
+
+        return render(request, "example/skor.html", {'length': len(sorted_data), 'data': sorted_data})
 
 
 @login_required
