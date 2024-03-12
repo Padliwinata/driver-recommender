@@ -11,42 +11,47 @@
         </div>
     </div>
     <form id="addRecordForm" action="{% url 'create-subvariabel' %}" method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="kode">Kode:</label>
-            <input type="text" class="form-control" id="kode" name="kode" required>
-        </div>
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="kode">Kode:</label>
+        <input type="text" class="form-control" id="kode" name="kode" required {% if data %}value="{{data.kode}}"{%endif%}>
+    </div>
 
-        <div class="form-group">
-            <label for="variabel">Variabel:</label>
-            <select class="form-control" id="variabel" name="variabel" required>
-                {% for option in data %}
-                    <option value="{{ option.nama }}">{{ option.nama }}</option>
-                {% endfor %}
-            </select>
-        </div>
+    <div class="form-group">
+        <label for="variabel">Variabel:</label>
+        <select class="form-control" id="variabel" name="variabel" required>
+            {% if variabels %}
+            {% for variabel in variabels %}
+            <option value="{{ variabel.nama }}">{{ variabel.nama }}</option>
+            {% endfor %}
+            {% endif %}
+        </select>
+    </div>
 
+    <div class="form-group">
+        <label for="nama">Nama:</label>
+        <input type="text" class="form-control" id="nama" name="nama" required
+            {% if data %}
+                value="{{ data.nama }}"
+            {% endif %}>
+    </div>
 
-        <div class="form-group">
-            <label for="nama">Nama:</label>
-            <input type="text" class="form-control" id="nama" name="nama" required>
-        </div>
+    <div class="form-group">
+        <label for="faktor">Faktor:</label>
+        <select class="form-control" id="faktor" name="faktor">
+            <option value="CORE" {% if data and data.faktor == 'CORE' %} selected {% endif %}>CORE</option>
+            <option value="SECONDARY" {% if data and data.faktor == 'SECONDARY' %} selected {% endif %}>SECONDARY</option>
+        </select>
+    </div>
 
-        <div class="form-group">
-            <label for="faktor">Faktor:</label>
-            <select class="form-control" id="faktor" name="faktor">
-                <option value="CORE">CORE</option>
-                <option value="SECONDARY">SECONDARY</option>
-            </select>
-        </div>
+    <div class="form-group">
+        <label for="standar">Standar:</label>
+        <input type="text" class="form-control" id="standar" name="standar" required {% if data %}value="{{data.standar}}"{% endif %}>
+    </div>
 
-        <div class="form-group">
-            <label for="standar">Standar:</label>
-            <input type="text" class="form-control" id="standar" name="standar" required>
-        </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
 </div>
 
 <!-- Bootstrap JS (optional, only needed if you want to use Bootstrap JavaScript features) -->

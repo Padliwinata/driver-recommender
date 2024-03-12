@@ -124,16 +124,24 @@ def create_variabel(request):
         faktor = request.POST.get('faktor')
         persentase = request.POST.get('persentase')
 
-        Variabel.objects.update_or_create(nama=nama, faktor=faktor, persentase=persentase)
+        record = Variabel.objects.filter(nama=nama)
 
-        return redirect('variabel')
+        if record:
+            data = record.first()
+            data.faktor = faktor
+            data.persentase = persentase
+            data.save()
+            return redirect('update-variabel')
+        else:
+            Variabel.objects.update_or_create(nama=nama, faktor=faktor, persentase=persentase)
+            return redirect('variabel')
 
 
 @login_required
 def create_subvariabel(request):
     if request.method == 'GET':
         variabels = Variabel.objects.all()
-        return render(request, 'example/add_subvariabel.html', {'data': variabels})
+        return render(request, 'example/add_subvariabel.html', {'variabels': variabels})
     if request.method == 'POST':
         kode = request.POST.get('kode')
         variabel = request.POST.get('variabel')
@@ -144,10 +152,20 @@ def create_subvariabel(request):
         variabel_sub = Variabel.objects.filter(nama=variabel)
         variabel_sub = variabel_sub[0]
 
-        SubVariabel.objects.update_or_create(kode=kode, variabel=variabel_sub, nama=nama, faktor=faktor,
-                                             standar=standar)
+        record = SubVariabel.objects.filter(kode=kode)
 
-        return redirect('subvariabel')
+        if record:
+            data = record.first()
+            data.variabel = variabel_sub
+            data.nama = nama
+            data.faktor = faktor
+            data.standar = standar
+            data.save()
+            return redirect('update-subvariabel')
+        else:
+            SubVariabel.objects.update_or_create(kode=kode, variabel=variabel_sub, nama=nama, faktor=faktor,
+                                                 standar=standar)
+            return redirect('subvariabel')
 
 
 @login_required
@@ -158,9 +176,16 @@ def create_employee(request):
         id_pegawai = request.POST.get('id_pegawai')
         nama = request.POST.get('nama')
 
-        Pegawai.objects.update_or_create(id_pegawai=id_pegawai, nama=nama)
+        record = Pegawai.objects.filter(id_pegawai=id_pegawai)
 
-        return redirect('employee')
+        if record:
+            data = record.first()
+            data.nama = nama
+            data.save()
+            return redirect('update-employee')
+        else:
+            Pegawai.objects.update_or_create(id_pegawai=id_pegawai, nama=nama)
+            return redirect('employee')
 
 
 @login_required
@@ -188,3 +213,48 @@ def delete_employee(request, id_pegawai):
         record.delete()
 
         return redirect('employee')
+
+
+@login_required
+def update_variabel(request):
+    if request.method == 'GET':
+        variabel_list = Variabel.objects.all()
+        return render(request, 'example/update_variabel.html', {'data': variabel_list})
+
+
+@login_required
+def actual_update_variabel(request, var_name):
+    if request.method == 'GET':
+        record = Variabel.objects.filter(nama=var_name)
+        return render(request, 'example/add_variabel.html', {'data': record[0]})
+
+
+@login_required
+def update_subvariabel(request):
+    if request.method == 'GET':
+        subvariabel_list = SubVariabel.objects.all()
+        variabel_list = Variabel.objects.all()
+        return render(request, 'example/update_subvariabel.html',
+                      {'data': subvariabel_list, 'variabels': variabel_list})
+
+
+@login_required
+def actual_update_subvariabel(request, kode):
+    if request.method == 'GET':
+        record = SubVariabel.objects.filter(kode=kode)
+        variabel_list = Variabel.objects.all()
+        return render(request, 'example/add_subvariabel.html', {'data': record[0], 'variabels': variabel_list})
+
+
+@login_required
+def update_employee(request):
+    if request.method == 'GET':
+        employee_list = Pegawai.objects.all()
+        return render(request, 'example/update_employee.html', {'data': employee_list})
+
+
+@login_required
+def actual_update_employee(request, id_pegawai):
+    if request.method == 'GET':
+        record = Pegawai.objects.filter(id_pegawai=id_pegawai)
+        return render(request, 'example/add_employee.html', {'data': record[0]})

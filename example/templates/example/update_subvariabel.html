@@ -10,25 +10,31 @@
             <h2 class="mt-5">Records</h2>
         </div>
 <!--        <div class="col text-right">-->
-<!--            <a href="{% url 'create-employee' %}" class="btn btn-primary mt-5">Add</a>-->
+<!--            <a href="{% url 'create-subvariabel' %}" class="btn btn-primary mt-5">Add</a>-->
 <!--        </div>-->
     </div>
     <table class="table">
         <thead>
             <tr>
-                <th>ID Pegawai</th>
+                <th>Kode</th>
+                <th>Variabel</th>
                 <th>Nama</th>
+                <th>Faktor</th>
+                <th>Standar</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody id="recordList">
             {% for var in data %}
             <tr>
-                <td>{{ var.id_pegawai }}</td>
+                <td>{{ var.kode }}</td>
+                <td>{{ var.variabel }}</td>
                 <td>{{ var.nama }}</td>
+                <td>{{ var.faktor }}</td>
+                <td>{{ var.standar }}</td>
                 <td>
-                    <a href="{% url 'delete-employee' var.id_pegawai %}" class="btn btn-danger btn-sm delete-btn">
-                        Delete
+                    <a href="{% url 'actual-update-subvariabel' var.kode %}" class="btn btn-success btn-sm delete-btn">
+                        Update
                     </a>
                 </td>
             </tr>
@@ -36,6 +42,7 @@
         </tbody>
     </table>
 </div>
+
 
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -10,16 +10,43 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto" style="font-size: 1.2rem;">
                 {% if user.is_authenticated %}
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
-                                                     href="{% url 'variabel' %}">Variabel</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
-                                                     href="{% url 'subvariabel' %}">Sub Variabel</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
-                                                     href="{% url 'employee' %}">Employee</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
-                                                     href="{% url 'main' %}">Mapping</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
-                                                     href="{% url 'skor' %}">Hasil</a></li>
+                <li class="nav-item mx-0 mx-lg-1 dropdown">
+                    <a class="nav-link py-1 px-2 px-lg-3 rounded dropdown-toggle" href="#" role="button"
+                       id="variabelDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Variabel
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="variabelDropdown">
+                        <li><a class="dropdown-item" href="{% url 'create-variabel' %}">Create Variabel</a></li>
+                        <li><a class="dropdown-item" href="{% url 'update-variabel' %}">Update Variabel</a></li>
+                        <li><a class="dropdown-item" href="{% url 'variabel' %}">View Variabel</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item mx-0 mx-lg-1 dropdown">
+                    <a class="nav-link py-1 px-2 px-lg-3 rounded dropdown-toggle" href="#" role="button"
+                       id="subVariabelDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Sub Variabel
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="subVariabelDropdown">
+                        <li><a class="dropdown-item" href="{% url 'create-subvariabel' %}">Create Sub Variabel</a></li>
+                        <li><a class="dropdown-item" href="{% url 'update-subvariabel' %}">Update Sub Variabel</a></li>
+                        <li><a class="dropdown-item" href="{% url 'subvariabel' %}">View Sub Variabel</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item mx-0 mx-lg-1 dropdown">
+                    <a class="nav-link py-1 px-2 px-lg-3 rounded dropdown-toggle" href="#" role="button"
+                       id="employeeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Employee
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="employeeDropdown">
+                        <li><a class="dropdown-item" href="{% url 'create-employee' %}">Create Employee</a></li>
+                        <li><a class="dropdown-item" href="{% url 'update-employee' %}">Update Employee</a></li>
+                        <li><a class="dropdown-item" href="{% url 'employee' %}">View Employee</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded" href="{% url 'main' %}">Mapping</a>
+                </li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded" href="{% url 'skor' %}">Hasil</a>
+                </li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
                                                      href="{% url 'logout' %}">Logout</a></li>
                 {% else %}

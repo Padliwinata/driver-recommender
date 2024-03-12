@@ -14,20 +14,40 @@
         {% csrf_token %}
         <div class="form-group">
             <label for="nama">Nama:</label>
-            <input type="text" class="form-control" id="nama" name="nama" required>
+            <input type="text" class="form-control" id="nama" name="nama" required
+            {% if data %}
+            value="{{data.nama}}"
+            {% endif %}
+            >
         </div>
 
         <div class="form-group">
             <label for="faktor">Faktor:</label>
             <select class="form-control" id="faktor" name="faktor">
-                <option value="CORE">CORE</option>
-                <option value="SECONDARY">SECONDARY</option>
+                <option value="CORE"
+                {% if data %}
+                {% if data.faktor == 'CORE' %}
+                selected
+                {% endif %}
+                {% endif %}
+                >CORE</option>
+                <option value="SECONDARY"
+                {% if data %}
+                {% if data.faktor == 'SECONDARY' %}
+                selected
+                {% endif %}
+                {% endif %}
+                >SECONDARY</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="persentase">Persentase:</label>
-            <input type="number" class="form-control" id="persentase" name="persentase" min="0" max="100" required>
+            <input type="number" class="form-control" id="persentase" name="persentase" min="0" max="100" required
+            {% if data %}
+            value={{data.persentase}}
+            {% endif %}
+            >
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
