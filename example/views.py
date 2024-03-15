@@ -73,10 +73,10 @@ def skor(request):
                 if selisih < 0:
                     normal -= 0.5
                 try:
-                    data[f'{angka.pegawai.nama}'][f'{angka.sub_variabel.variabel.nama}'][
+                    data[f'{angka.pegawai.id_pegawai}'][f'{angka.sub_variabel.variabel.nama}'][
                         f'{angka.sub_variabel.faktor}'].append(normal)
                 except KeyError:
-                    data[f'{angka.pegawai.nama}'][f'{angka.sub_variabel.variabel.nama}'][
+                    data[f'{angka.pegawai.id_pegawai}'][f'{angka.sub_variabel.variabel.nama}'][
                         f'{angka.sub_variabel.faktor}'] = [normal]
 
         portion = [var.persentase for var in variabel]

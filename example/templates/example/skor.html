@@ -9,16 +9,21 @@
             <div class="col col-xl-10">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table" id="myTable">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nama</th>
-                                <th scope="col">Skor</th>
+                                <th scope="col">
+                                    Skor
+                                    <span class="sort-icon">
+                                            <i class="fas fa-sort-up" data-order="asc"></i>
+                                            <i class="fas fa-sort-down" data-order="desc"></i>
+                                        </span>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
-
                             {% for key, value in data.items %}
                             <tr>
                                 <th scope="row">{{ forloop.counter }}</th>
@@ -26,15 +31,8 @@
                                 <td>{{ value }}</td>
                             </tr>
                             {% endfor %}
-                            
-                            <!--                            <tr>-->
-                            <!--                                <th scope="row">3</th>-->
-                            <!--                                <td>Larry</td>-->
-                            <!--                                <td>the Bird</td>-->
-                            <!--                            </tr>-->
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>
