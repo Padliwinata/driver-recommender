@@ -87,7 +87,7 @@ def skor(request):
 
         data = dict()
         for i in range(len(pegawais)):
-            data[pegawais[i].id_pegawai] = res[i]
+            data[pegawais[i].nama] = res[i]
 
         sorted_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
 
