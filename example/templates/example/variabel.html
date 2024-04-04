@@ -28,11 +28,14 @@
             <td>{{ var.nama }}</td>
             <td>{{ var.faktor }}</td>
             <td>{{ var.persentase }}</td>
+
+<!--            Ini untuk button delete-->
             <td>
                 <a href="{% url 'delete-variabel' var.nama %}" class="btn btn-danger btn-sm delete-btn">
                     Delete
                 </a>
             </td>
+<!--            Sampai sini-->
 
         </tr>
         {% endfor %}

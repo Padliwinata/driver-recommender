@@ -10,6 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto" style="font-size: 1.2rem;">
                 {% if user.is_authenticated %}
+                <!--                Menu untuk user sudah login-->
                 <li class="nav-item mx-0 mx-lg-1 dropdown">
                     <a class="nav-link py-1 px-2 px-lg-3 rounded dropdown-toggle" href="#" role="button"
                        id="variabelDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -21,6 +22,7 @@
                         <li><a class="dropdown-item" href="{% url 'variabel' %}">View Variabel</a></li>
                     </ul>
                 </li>
+
                 <li class="nav-item mx-0 mx-lg-1 dropdown">
                     <a class="nav-link py-1 px-2 px-lg-3 rounded dropdown-toggle" href="#" role="button"
                        id="subVariabelDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -32,6 +34,7 @@
                         <li><a class="dropdown-item" href="{% url 'subvariabel' %}">View Sub Variabel</a></li>
                     </ul>
                 </li>
+
                 <li class="nav-item mx-0 mx-lg-1 dropdown">
                     <a class="nav-link py-1 px-2 px-lg-3 rounded dropdown-toggle" href="#" role="button"
                        id="employeeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -43,15 +46,21 @@
                         <li><a class="dropdown-item" href="{% url 'employee' %}">View Employee</a></li>
                     </ul>
                 </li>
+
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded" href="{% url 'main' %}">Mapping</a>
                 </li>
+
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded" href="{% url 'skor' %}">Hasil</a>
                 </li>
+
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
                                                      href="{% url 'logout' %}">Logout</a></li>
+                <!--                Sampai sini-->
                 {% else %}
+                <!--                Ditampilkan ketika user belum login-->
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-1 px-2 px-lg-3 rounded"
                                                      href="{% url 'login' %}">Login</a></li>
+
                 {% endif %}
             </ul>
         </div>

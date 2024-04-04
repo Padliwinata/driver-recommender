@@ -29,12 +29,6 @@ def index(request):
 @login_required
 def main(request):
     if request.method == "GET":
-        # referer_page = request.META.get("HTTP_REFERER", "")
-        # referrer_path = urlparse(referer_page).path
-        #
-        # if referrer_path != "/example/login" and referrer_path != "/example/main":
-        #     return HttpResponseForbidden("Access Forbidden")
-
         pegawai_list = Pegawai.objects.all()
         subvar_list = SubVariabel.objects.all()
 
@@ -42,20 +36,21 @@ def main(request):
     if request.method == "POST":
         pegawai = Pegawai.objects.get(pk=request.POST.get('pegawai', ''))
         subvars = SubVariabel.objects.all()
+
         values = request.POST.getlist('subvar[]')
         for i in range(len(values)):
             Skor.objects.update_or_create(pegawai=pegawai, sub_variabel=subvars[i], skor=values[i])
+
         return redirect("main")
 
 
 @login_required
 def skor(request):
     if request.method == "GET":
-        skors = []
+
         data = defaultdict(lambda: defaultdict(dict))
         pegawais = Pegawai.objects.all()
         variabel = Variabel.objects.all()
-        subvars = SubVariabel.objects.all()
 
         skors = []
         for pegawai in pegawais:
@@ -69,9 +64,26 @@ def skor(request):
             # print(pegawais[x].nama)
             for angka in skors[x]:
                 selisih = angka.skor - angka.sub_variabel.standar
-                normal = 6 - abs(selisih) * 0.5
-                if selisih < 0:
-                    normal -= 0.5
+                normal = 0
+                if selisih == 0:
+                    normal = 6
+                elif selisih == -1:
+                    normal = 5
+                elif selisih == 1:
+                    normal = 5.5
+                elif selisih == -2:
+                    normal = 4
+                elif selisih == 2:
+                    normal = 4.5
+                elif selisih == -3:
+                    normal = 3
+                elif selisih == 3:
+                    normal = 3.5
+                elif selisih == -4:
+                    normal = 2
+                elif selisih == 4:
+                    normal = 2.5
+
                 try:
                     data[f'{angka.pegawai.id_pegawai}'][f'{angka.sub_variabel.variabel.nama}'][
                         f'{angka.sub_variabel.faktor}'].append(normal)
@@ -79,6 +91,7 @@ def skor(request):
                     data[f'{angka.pegawai.id_pegawai}'][f'{angka.sub_variabel.variabel.nama}'][
                         f'{angka.sub_variabel.faktor}'] = [normal]
 
+        print(json.dumps(data, indent=4))
         portion = [var.persentase for var in variabel]
 
         res = []
@@ -97,6 +110,7 @@ def skor(request):
 @login_required
 def variabel(request):
     if request.method == 'GET':
+        # Kalau ada ".objects.all()" berarti ambil data dari db
         variabel_list = Variabel.objects.all()
         return render(request, 'example/variabel.html', {'data': variabel_list})
 
@@ -191,7 +205,10 @@ def create_employee(request):
 @login_required
 def delete_variabel(request, var_name):
     if request.method == 'GET':
+        # Ambil data dari db
         record = get_object_or_404(Variabel, nama=var_name)
+
+        # Lalu dihapus
         record.delete()
 
         return redirect('variabel')
