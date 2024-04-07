@@ -48,18 +48,22 @@ def main(request):
 def skor(request):
     if request.method == "GET":
 
+        # Membuat variabel untuk menyimpan hasil akhir
         data = defaultdict(lambda: defaultdict(dict))
+
+        # Ambil data semua pegawai dan semua variabel
         pegawais = Pegawai.objects.all()
         variabel = Variabel.objects.all()
 
+        # Membuat variabel untuk menyimpan skor dari masing masing pegawai
         skors = []
         for pegawai in pegawais:
+            # Ambil data pegawai
             skor = Skor.objects.filter(pegawai=pegawai).select_related('sub_variabel')
+
+            # Lalu simpan di skors
             skors.append(skor)
 
-        # return render(request, 'example/skor.html', {'length': length, 'data': []})
-        # else:
-        # print(skors)
         for x in range(len(pegawais)):
             # print(pegawais[x].nama)
             for angka in skors[x]:
@@ -91,9 +95,10 @@ def skor(request):
                     data[f'{angka.pegawai.id_pegawai}'][f'{angka.sub_variabel.variabel.nama}'][
                         f'{angka.sub_variabel.faktor}'] = [normal]
 
-        print(json.dumps(data, indent=4))
+        # Ambil bobot porsi variabel
         portion = [var.persentase for var in variabel]
 
+        # Membuat variabel wadah nilai akhir
         res = []
         for key, value in data.items():
             res.append(get_skor(value, portion))
@@ -102,6 +107,7 @@ def skor(request):
         for i in range(len(pegawais)):
             data[pegawais[i].nama] = res[i]
 
+        # Sorting data hasil akhir
         sorted_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
 
         return render(request, "example/skor.html", {'length': len(sorted_data), 'data': sorted_data})
