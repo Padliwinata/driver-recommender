@@ -1,5 +1,7 @@
 {% extends 'example/base.html' %}
 
+{% load static %}
+
 {% block title %}Login{% endblock %}
 
 {% block content %}
@@ -10,8 +12,8 @@
                 <div class="card" style="border-radius: 1rem;">
                     <div class="row g-0">
                         <div class="col-md-6 col-lg-5 d-none d-md-block">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
-                                alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                            <img src="{% static 'example/img/login.jpeg' %}"
+                                 alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;"/>
                         </div>
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
@@ -27,13 +29,14 @@
                                     </h5>
 
                                     <div class="form-outline mb-4">
-                                        <input name="username" type="text" id="form2Example17" class="form-control form-control-lg" />
+                                        <input name="username" type="text" id="form2Example17"
+                                               class="form-control form-control-lg"/>
                                         <label class="form-label" for="form2Example17">Username</label>
                                     </div>
 
                                     <div class="form-outline mb-4">
                                         <input name="password" type="password" id="form2Example27"
-                                            class="form-control form-control-lg" />
+                                               class="form-control form-control-lg"/>
                                         <label class="form-label" for="form2Example27">Password</label>
                                     </div>
 
