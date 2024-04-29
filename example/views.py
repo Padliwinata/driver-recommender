@@ -1,8 +1,9 @@
 from collections import defaultdict
 import json
 
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from urllib.parse import urlparse
 
@@ -117,8 +118,12 @@ def skor(request):
 def variabel(request):
     if request.method == 'GET':
         # Kalau ada ".objects.all()" berarti ambil data dari db
+        try:
+            message = request.session.pop('message')
+        except KeyError:
+            message = ''
         variabel_list = Variabel.objects.all()
-        return render(request, 'example/variabel.html', {'data': variabel_list})
+        return render(request, 'example/variabel.html', {'data': variabel_list, 'message': message})
 
 
 @login_required
@@ -138,7 +143,12 @@ def employee(request):
 @login_required
 def create_variabel(request):
     if request.method == 'GET':
-        return render(request, 'example/add_variabel.html')
+        variabels = Variabel.objects.all()
+        maximum_percentage = sum([var.persentase for var in variabels])
+        if maximum_percentage == 100:
+            request.session['message'] = 'Tidak bisa menambahkan variabel karena persentase sudah maksimal'
+            return redirect(reverse('variabel'))
+        return render(request, 'example/add_variabel.html', {'max': 100 - maximum_percentage})
     if request.method == 'POST':
         nama = request.POST.get('nama')
         faktor = request.POST.get('faktor')

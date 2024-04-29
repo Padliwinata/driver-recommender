@@ -43,7 +43,7 @@
 
         <div class="form-group">
             <label for="persentase">Persentase:</label>
-            <input type="number" class="form-control" id="persentase" name="persentase" min="0" max="100" required
+            <input type="number" class="form-control" id="persentase" name="persentase" min="0" max="{{ max }}" required
             {% if data %}
             value={{data.persentase}}
             {% endif %}
