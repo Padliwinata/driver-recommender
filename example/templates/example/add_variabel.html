@@ -56,5 +56,21 @@
 
 <!-- Bootstrap JS (optional, only needed if you want to use Bootstrap JavaScript features) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Select the button using a class or ID
+const submitButton = document.querySelector('.btn-primary');
+
+// Add an event listener for the "click" event
+submitButton.addEventListener('click', function(event) {
+  // Prompt the user with a confirmation message
+  const confirmation = confirm('Anda sudah yakin dengan data yang anda inputkan?');
+
+  // If the user clicks "Cancel", prevent form submission
+  if (!confirmation) {
+    event.preventDefault(); // This stops the form from submitting
+  }
+});
+
+</script>
 </body>
 {% endblock %}
