@@ -48,6 +48,11 @@ def main(request):
 @login_required
 def skor(request):
     if request.method == "GET":
+        class Data:
+            def __init__(self, id_pegawai, nama, skor):
+                self.id_pegawai = id_pegawai
+                self.nama = nama
+                self.skor = skor
 
         # Membuat variabel untuk menyimpan hasil akhir
         data = defaultdict(lambda: defaultdict(dict))
@@ -99,6 +104,8 @@ def skor(request):
         # Ambil bobot porsi variabel
         portion = [var.persentase for var in variabel]
 
+        print(json.dumps(data, indent=4))
+
         # Membuat variabel wadah nilai akhir
         res = []
         for key, value in data.items():
@@ -108,10 +115,85 @@ def skor(request):
         for i in range(len(pegawais)):
             data[pegawais[i].nama] = res[i]
 
+        baru = []
+        for i in range(len(pegawais)):
+            baru.append(Data(pegawais[i].id_pegawai, pegawais[i].nama, res[i]))
+
         # Sorting data hasil akhir
-        sorted_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
+        sorted_data = sorted(baru, key=lambda item: item.skor, reverse=True)
 
         return render(request, "example/skor.html", {'length': len(sorted_data), 'data': sorted_data})
+
+
+@login_required
+def detail_skor(request, id_pegawai):
+    if request.method == 'GET':
+        data = defaultdict(dict)
+        skor_pengelompokkan = defaultdict(dict)
+        skor_per_variabel = defaultdict(dict)
+
+        variabels = Variabel.objects.all()
+        portion = [vari.persentase for vari in variabels]
+
+        skor_pegawai = Skor.objects.filter(pegawai__id_pegawai=id_pegawai).select_related('sub_variabel')
+        # sub_variabel = [skor.sub_variabel.kode for skor in skor_pegawai]
+
+        # send
+        skor_raw = {x.sub_variabel.kode: x.skor for x in skor_pegawai}
+
+        for angka in skor_pegawai:
+            selisih = angka.skor - angka.sub_variabel.standar
+            normal = 0
+            if selisih == 0:
+                normal = 6
+            elif selisih == -1:
+                normal = 5
+            elif selisih == 1:
+                normal = 5.5
+            elif selisih == -2:
+                normal = 4
+            elif selisih == 2:
+                normal = 4.5
+            elif selisih == -3:
+                normal = 3
+            elif selisih == 3:
+                normal = 3.5
+            elif selisih == -4:
+                normal = 2
+            elif selisih == 4:
+                normal = 2.5
+
+            try:
+                data[f'{angka.sub_variabel.variabel.nama}'][
+                    f'{angka.sub_variabel.faktor}'].append(normal)
+            except KeyError:
+                data[f'{angka.sub_variabel.variabel.nama}'][
+                    f'{angka.sub_variabel.faktor}'] = [normal]
+
+        # send
+        skor_normalisasi = data
+
+        for key, val in skor_normalisasi.items():
+            for key_factor, val_factor in val.items():
+                skor_pengelompokkan[key][key_factor] = sum(data[key][key_factor]) / len(data[key][key_factor])
+
+        for key, val in skor_pengelompokkan.items():
+            skor_per_variabel[key] = 0.7 * val['CORE'] + 0.3 * val['SECONDARY']
+
+        skor_per_variabel = dict(skor_per_variabel)
+        res = []
+        items = list(skor_per_variabel.items())
+        for i in range(len(portion)):
+            res.append(items[i][1] * (portion[i] / 100))
+
+        # send
+        skor_persentase = res
+
+        return render(request, 'example/detail_skor.html',
+                      {'skor_raw': skor_raw, 'skor_normalisasi': dict(skor_normalisasi),
+                       'skor_pengelompokkan': dict(skor_pengelompokkan),
+                       'skor_per_variabel': skor_per_variabel, 'skor_persentase': skor_persentase,
+                       'skor_final': sum(skor_persentase)})
 
 
 @login_required

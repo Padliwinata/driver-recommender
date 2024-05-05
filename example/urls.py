@@ -7,6 +7,7 @@ urlpatterns = [
     # path('login', login, name='login'),
     path('main', main, name='main'),
     path('skor', skor, name='skor'),
+    path('skor/<str:id_pegawai>', detail_skor, name='detail-skor'),
     path('variabel', variabel, name='variabel'),
     path('create-variabel', create_variabel, name='create-variabel'),
     path('update-variabel', update_variabel, name='update-variabel'),

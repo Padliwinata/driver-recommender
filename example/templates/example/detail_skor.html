@@ -1,0 +1,181 @@
+{% extends 'example/base.html' %}
+{% load static %}
+
+{% block title %}Recommender{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h2 class="mt-5">Detail Tahap Perhitungan</h2>
+            {% if message %}
+            <p>{{ message }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4 class="mt-5">Skor Asli</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Sub Variabel</th>
+                    <th>Skor</th>
+                </tr>
+                </thead>
+                <tbody id="recordList">
+                {% for key, val in skor_raw.items %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ val }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4 class="mt-5">Skor Normalisasi</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Variabel</th>
+                    <th>Faktor</th>
+                    <th>Skor</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, val in skor_normalisasi.items %}
+                <tr>
+                    <td rowspan="2">{{ key }}</td>
+                    <td>CORE</td>
+                    <td>{{ val.CORE }}</td>
+                </tr>
+                <tr>
+                    <td>SECONDARY</td>
+                    <td>{{ val.SECONDARY }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4 class="mt-5">Skor Pengelompokkan</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Variabel</th>
+                    <th>Faktor</th>
+                    <th>Skor</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, val in skor_pengelompokkan.items %}
+                <tr>
+                    <td rowspan="2">{{ key }}</td>
+                    <td>CORE</td>
+                    <td>{{ val.CORE }}</td>
+                </tr>
+                <tr>
+                    <td>SECONDARY</td>
+                    <td>{{ val.SECONDARY }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4 class="mt-5">Skor Per Variabel</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Variabel</th>
+                    <th>Skor</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, val in skor_per_variabel.items %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ val }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4 class="mt-5">Skor Variabel Sesuai Persentase</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Skor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        {{ skor_persentase }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4 class="mt-5">Skor Final</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Skor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        {{ skor_final }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</body>
+{% endblock %}
