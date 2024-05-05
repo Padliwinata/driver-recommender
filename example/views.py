@@ -186,6 +186,8 @@ def detail_skor(request, id_pegawai):
         for i in range(len(portion)):
             res.append(items[i][1] * (portion[i] / 100))
 
+        for key, new_value in zip(skor_per_variabel.keys(), res):
+            skor_per_variabel[key] = new_value
         # send
         skor_persentase = res
 
