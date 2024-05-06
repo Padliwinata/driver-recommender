@@ -8,6 +8,9 @@
     <div class="row">
         <div class="col">
             <h2 class="mt-5">Add Variabel</h2>
+            {% if message %}
+            <p>{{ message }}</p>
+            {% endif %}
         </div>
     </div>
     <form id="addRecordForm" action="{% url 'create-variabel' %}" method="POST">
@@ -16,6 +19,7 @@
             <label for="nama">Nama:</label>
             <input type="text" class="form-control" id="nama" name="nama" required
             {% if data %}
+           disabled
             value="{{data.nama}}"
             {% endif %}
             >

@@ -9,12 +9,12 @@
         <div class="col">
             <h2 class="mt-5">Records</h2>
         </div>
-<!--        <div class="col text-right">-->
-<!--            <a href="{% url 'create-subvariabel' %}" class="btn btn-primary mt-5">Add</a>-->
-<!--        </div>-->
     </div>
     <table class="table">
         <thead>
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
             <tr>
                 <th>Kode</th>
                 <th>Variabel</th>

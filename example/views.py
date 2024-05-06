@@ -213,8 +213,12 @@ def variabel(request):
 @login_required
 def subvariabel(request):
     if request.method == 'GET':
+        try:
+            message = request.session.pop('message')
+        except KeyError:
+            message = ''
         subvariabel_list = SubVariabel.objects.all()
-        return render(request, 'example/subvariabel.html', {'data': subvariabel_list})
+        return render(request, 'example/subvariabel.html', {'data': subvariabel_list, 'message': message})
 
 
 @login_required
@@ -241,11 +245,13 @@ def create_variabel(request):
         record = Variabel.objects.filter(nama=nama)
 
         if record:
-            data = record.first()
-            data.faktor = faktor
-            data.persentase = persentase
-            data.save()
-            return redirect('update-variabel')
+            request.session['message'] = 'Variabel sudah digunakan'
+            return redirect(reverse('variabel'))
+            # data = record.first()
+            # data.faktor = faktor
+            # data.persentase = persentase
+            # data.save()
+            # return redirect('update-variabel')
         else:
             Variabel.objects.update_or_create(nama=nama, faktor=faktor, persentase=persentase)
             return redirect('variabel')
@@ -269,13 +275,15 @@ def create_subvariabel(request):
         record = SubVariabel.objects.filter(kode=kode)
 
         if record:
-            data = record.first()
-            data.variabel = variabel_sub
-            data.nama = nama
-            data.faktor = faktor
-            data.standar = standar
-            data.save()
-            return redirect('update-subvariabel')
+            request.session['message'] = 'Sub variabel sudah digunakan'
+            return redirect(reverse('subvariabel'))
+            # data = record.first()
+            # data.variabel = variabel_sub
+            # data.nama = nama
+            # data.faktor = faktor
+            # data.standar = standar
+            # data.save()
+            # return redirect('update-subvariabel')
         else:
             SubVariabel.objects.update_or_create(kode=kode, variabel=variabel_sub, nama=nama, faktor=faktor,
                                                  standar=standar)
@@ -337,6 +345,13 @@ def update_variabel(request):
     if request.method == 'GET':
         variabel_list = Variabel.objects.all()
         return render(request, 'example/update_variabel.html', {'data': variabel_list})
+    elif request.method == 'POST':
+        nama = request.POST.get('nama')
+        faktor = request.POST.get('faktor')
+        persentase = request.POST.get('persentase')
+
+        Variabel.objects.update_or_create(nama=nama, faktor=faktor, persentase=persentase)
+        return redirect('update-variabel')
 
 
 @login_required
