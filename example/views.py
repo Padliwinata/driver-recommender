@@ -4,6 +4,7 @@ import json
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from urllib.parse import urlparse
 
@@ -11,20 +12,40 @@ from .models import Pegawai, SubVariabel, Skor, Variabel
 from .utils import get_skor
 
 
+# Function to read data from JSON file
+def read_json(filename):
+    try:
+        with open(filename, 'r') as file:
+            data = json.load(file)
+            return data
+    except FileNotFoundError:
+        return {}
+
+
+# Function to write data to JSON file
+def write_json(data, filename):
+    with open(filename, 'w') as file:
+        json.dump(data, file, indent=4)
+
+
+# Function to append data to JSON file
+def append_to_json(filename, username, password) -> bool:
+    data = read_json(filename)
+    if username not in data:
+        data[username] = password
+        write_json(data, filename)
+        return True
+    else:
+        return False
+
+
+# File name
+file_name = "data.json"
+
+
 # Create your views here.
 def index(request):
     return render(request, "example/index.html")
-
-
-# def mapping(request):
-#     if request.method == "GET":
-#         return render(request, "example/login.html")
-#     if request.method == "POST":
-#         username = request.POST.get("username", "")
-#         password = request.POST.get("password", "")
-#
-#         if username == password == "admin":
-#             return redirect("main")
 
 
 @login_required
@@ -390,3 +411,27 @@ def actual_update_employee(request, id_pegawai):
     if request.method == 'GET':
         record = Pegawai.objects.filter(id_pegawai=id_pegawai)
         return render(request, 'example/add_employee.html', {'data': record[0]})
+
+
+def login_view(request):
+    if request.method == 'GET':
+        return render(request, 'example/login.html')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if read_json(file_name)[username] == password:
+            user = authenticate(request, username='admin', password='admin')
+            login(request, user)
+            return redirect('index')
+        return redirect('login')
+
+
+def add_user(request):
+    if request.method == 'GET':
+        return render(request, 'example/add_user.html')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if append_to_json(file_name, username, password):
+            return redirect('login')

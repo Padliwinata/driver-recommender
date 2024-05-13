@@ -24,5 +24,7 @@ urlpatterns = [
     path('act-update-employee/<str:id_pegawai>', actual_update_employee, name='actual-update-employee'),
     path('delete-employee/<str:id_pegawai>', delete_employee, name='delete-employee'),
     path('logout', auth_views.LogoutView.as_view(), name='logout'),
-    path('login', auth_views.LoginView.as_view(template_name='example/login.html'), name='login')
+    # path('login', auth_views.LoginView.as_view(template_name='example/login.html'), name='login'),
+    path('login', login_view, name='login'),
+    path('add-user', add_user, name='add-user')
 ]

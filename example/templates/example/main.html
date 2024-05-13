@@ -33,6 +33,7 @@
                                     <select class="form-control" id="standar" name="subvar[]" required>
                                         <option value="">-- Pilih standar --</option>  <!-- Placeholder option -->
                                         <!-- Options with values 1, 2, 3, 4 -->
+                                        <option value="0" {% if data and data.standar == '0' %}selected{% endif %}>0</option>
                                         <option value="1" {% if data and data.standar == '1' %}selected{% endif %}>1</option>
                                         <option value="2" {% if data and data.standar == '2' %}selected{% endif %}>2</option>
                                         <option value="3" {% if data and data.standar == '3' %}selected{% endif %}>3</option>
