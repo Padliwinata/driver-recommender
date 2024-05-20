@@ -13,7 +13,11 @@
             {% endif %}
         </div>
     </div>
+    {% if data %}
+    <form id="addRecordForm" action="{% url 'update-variabel' %}" method="POST">
+    {% else %}
     <form id="addRecordForm" action="{% url 'create-variabel' %}" method="POST">
+    {% endif %}
         {% csrf_token %}
         <div class="form-group">
             <label for="nama">Nama:</label>
@@ -54,6 +58,9 @@
             >
         </div>
 
+        {% if data %}
+        <input type="hidden" name="nama" value="{{ var_name }}">
+        {% endif %}
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>

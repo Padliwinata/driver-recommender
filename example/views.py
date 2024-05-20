@@ -2,6 +2,7 @@ from collections import defaultdict
 import json
 
 from django.http import HttpResponseBadRequest
+from django.db.models import Exists, OuterRef
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
@@ -60,8 +61,15 @@ def main(request):
         subvars = SubVariabel.objects.all()
 
         values = request.POST.getlist('subvar[]')
-        for i in range(len(values)):
-            Skor.objects.update_or_create(pegawai=pegawai, sub_variabel=subvars[i], skor=values[i])
+        skors = Skor.objects.filter(pegawai=pegawai)
+        if len(skors) != 0:
+            for i in range(len(values)):
+                # Skor.objects.update_or_create(pegawai=pegawai, sub_variabel=subvars[i], skor=values[i])
+                skors[i].skor = values[i]
+                skors[i].save()
+        else:
+            for i in range(len(values)):
+                Skor.objects.update_or_create(pegawai=pegawai, sub_variabel=subvars[i], skor=values[i])
 
         return redirect("main")
 
@@ -79,8 +87,11 @@ def skor(request):
         data = defaultdict(lambda: defaultdict(dict))
 
         # Ambil data semua pegawai dan semua variabel
-        pegawais = Pegawai.objects.all()
+        # pegawais = Pegawai.objects.all()
         variabel = Variabel.objects.all()
+        pegawais = Pegawai.objects.filter(
+            Exists(Skor.objects.filter(pegawai=OuterRef('pk')))
+        )
 
         # Membuat variabel untuk menyimpan skor dari masing masing pegawai
         skors = []
@@ -134,11 +145,17 @@ def skor(request):
 
         data = dict()
         for i in range(len(pegawais)):
-            data[pegawais[i].nama] = res[i]
+            try:
+                data[pegawais[i].nama] = res[i]
+            except IndexError:
+                pass
 
         baru = []
         for i in range(len(pegawais)):
-            baru.append(Data(pegawais[i].id_pegawai, pegawais[i].nama, res[i]))
+            try:
+                baru.append(Data(pegawais[i].id_pegawai, pegawais[i].nama, res[i]))
+            except IndexError:
+                pass
 
         # Sorting data hasil akhir
         sorted_data = sorted(baru, key=lambda item: item.skor, reverse=True)
@@ -364,14 +381,34 @@ def delete_employee(request, id_pegawai):
 @login_required
 def update_variabel(request):
     if request.method == 'GET':
+        try:
+            message = request.session.pop('message')
+        except KeyError:
+            message = ''
+
         variabel_list = Variabel.objects.all()
-        return render(request, 'example/update_variabel.html', {'data': variabel_list})
+        return render(request, 'example/update_variabel.html', {'data': variabel_list, 'message': message})
     elif request.method == 'POST':
         nama = request.POST.get('nama')
         faktor = request.POST.get('faktor')
         persentase = request.POST.get('persentase')
 
-        Variabel.objects.update_or_create(nama=nama, faktor=faktor, persentase=persentase)
+        total = 0
+        all_variabel = Variabel.objects.exclude(nama=nama)
+        for variabel in all_variabel:
+            total += int(variabel.persentase)
+
+        if int(persentase) + total > 100:
+            request.session['message'] = 'Tidak bisa mengubah persentase variabel karena persentase sudah maksimal'
+            return redirect(reverse('update-variabel'))
+
+        record = Variabel.objects.filter(nama=nama)
+        record = record.first()
+        record.faktor = faktor
+        record.persentase = int(persentase)
+        record.save()
+
+        # Variabel.objects.update_or_create(nama=nama, faktor=faktor, persentase=persentase)
         return redirect('update-variabel')
 
 
@@ -379,7 +416,12 @@ def update_variabel(request):
 def actual_update_variabel(request, var_name):
     if request.method == 'GET':
         record = Variabel.objects.filter(nama=var_name)
-        return render(request, 'example/add_variabel.html', {'data': record[0]})
+        try:
+            message = request.session.pop('message')
+        except KeyError:
+            message = ''
+        return render(request, 'example/add_variabel.html',
+                      {'data': record[0], 'message': message, 'var_name': var_name})
 
 
 @login_required
