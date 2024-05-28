@@ -6,7 +6,16 @@ def get_skor(data: dict, portion: list):
 
     # Perhitungan nilai berdasarkan variabel
     for key_sub, val_sub in data.items():
-        data[key_sub] = 0.7 * val_sub["CORE"] + 0.3 * val_sub["SECONDARY"]
+        try:
+            core = val_sub['CORE']
+        except KeyError:
+            core = 0
+
+        try:
+            secondary = val_sub['SECONDARY']
+        except KeyError:
+            secondary = 0
+        data[key_sub] = 0.7 * core + 0.3 * secondary
 
     # Perhitungan nilai final
     res = []

@@ -136,7 +136,7 @@ def skor(request):
         # Ambil bobot porsi variabel
         portion = [var.persentase for var in variabel]
 
-        print(json.dumps(data, indent=4))
+        # print(json.dumps(data, indent=4))
 
         # Membuat variabel wadah nilai akhir
         res = []
@@ -216,7 +216,16 @@ def detail_skor(request, id_pegawai):
                 skor_pengelompokkan[key][key_factor] = sum(data[key][key_factor]) / len(data[key][key_factor])
 
         for key, val in skor_pengelompokkan.items():
-            skor_per_variabel[key] = 0.7 * val['CORE'] + 0.3 * val['SECONDARY']
+            try:
+                core = val['CORE']
+            except KeyError:
+                core = 0
+
+            try:
+                secondary = val['SECONDARY']
+            except KeyError:
+                secondary = 0
+            skor_per_variabel[key] = 0.7 * core + 0.3 * secondary
 
         skor_per_variabel = dict(skor_per_variabel)
         res = []
