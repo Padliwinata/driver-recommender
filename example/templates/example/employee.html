@@ -18,7 +18,7 @@
             <tr>
                 <th>ID Pegawai</th>
                 <th>Nama</th>
-                <th>Action</th>
+<!--                <th>Action</th>-->
             </tr>
         </thead>
         <tbody id="recordList">
@@ -26,11 +26,11 @@
             <tr>
                 <td>{{ var.nama }}</td>
                 <td>{{ var.id_pegawai }}</td>
-                <td>
-                    <a href="{% url 'delete-employee' var.id_pegawai %}" class="btn btn-danger btn-sm delete-btn">
-                        Delete
-                    </a>
-                </td>
+<!--                <td>-->
+<!--                    <a href="{% url 'delete-employee' var.id_pegawai %}" class="btn btn-danger btn-sm delete-btn">-->
+<!--                        Delete-->
+<!--                    </a>-->
+<!--                </td>-->
             </tr>
             {% endfor %}
         </tbody>

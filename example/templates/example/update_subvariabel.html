@@ -15,18 +15,18 @@
     </div>
     <table class="table">
         <thead>
-            <tr>
+            <tr align="center">
                 <th>Kode</th>
                 <th>Variabel</th>
                 <th>Nama</th>
                 <th>Faktor</th>
                 <th>Standar</th>
-                <th>Action</th>
+                <th colspan="2">Action</th>
             </tr>
         </thead>
         <tbody id="recordList">
             {% for var in data %}
-            <tr>
+            <tr align="center">
                 <td>{{ var.kode }}</td>
                 <td>{{ var.variabel }}</td>
                 <td>{{ var.nama }}</td>
@@ -35,6 +35,11 @@
                 <td>
                     <a href="{% url 'actual-update-subvariabel' var.kode %}" class="btn btn-success btn-sm delete-btn">
                         Update
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'delete-subvariabel' var.kode %}" class="btn btn-danger btn-sm delete-btn">
+                        Delete
                     </a>
                 </td>
             </tr>

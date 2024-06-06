@@ -18,16 +18,16 @@
     </div>
     <table class="table">
         <thead>
-        <tr>
+        <tr align="center">
             <th>Nama</th>
             <th>Faktor</th>
             <th>Persentase</th>
-            <th>Action</th>
+            <th colspan="2">Action</th>
         </tr>
         </thead>
         <tbody id="recordList">
         {% for var in data %}
-        <tr>
+        <tr align="center">
             <td>{{ var.nama }}</td>
             <td>{{ var.faktor }}</td>
             <td>{{ var.persentase }}</td>
@@ -36,7 +36,11 @@
                     Update
                 </a>
             </td>
-
+            <td>
+                <a href="{% url 'delete-variabel' var.nama %}" class="btn btn-danger btn-sm delete-btn">
+                    Delete
+                </a>
+            </td>
         </tr>
         {% endfor %}
         </tbody>

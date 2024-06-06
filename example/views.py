@@ -429,8 +429,12 @@ def actual_update_variabel(request, var_name):
             message = request.session.pop('message')
         except KeyError:
             message = ''
+
+        variabels = Variabel.objects.all()
+        maximum_percentage = sum([var.persentase for var in variabels])
+
         return render(request, 'example/add_variabel.html',
-                      {'data': record[0], 'message': message, 'var_name': var_name})
+                      {'data': record[0], 'message': message, 'var_name': var_name, 'max_val': maximum_percentage})
 
 
 @login_required
@@ -466,15 +470,22 @@ def actual_update_employee(request, id_pegawai):
 
 def login_view(request):
     if request.method == 'GET':
-        return render(request, 'example/login.html')
+        try:
+            message = request.session.pop('message')
+        except KeyError:
+            message = ''
+        return render(request, 'example/login.html', {'message': message})
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        if read_json(file_name)[username] == password:
-            user = authenticate(request, username='admin', password='admin')
-            login(request, user)
-            return redirect('index')
-        return redirect('login')
+        try:
+            if read_json(file_name)[username] == password:
+                user = authenticate(request, username='admin', password='admin')
+                login(request, user)
+                return redirect('index')
+        except KeyError:
+            request.session['message'] = 'Username & password tidak sesuai'
+            return redirect('login')
 
 
 def add_user(request):

@@ -25,8 +25,11 @@
                                         <span class="h1 fw-bold mb-0">Recommender</span>
                                     </div>
 
-                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account
-                                    </h5>
+                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your
+                                        account</h5>
+                                    {% if message %}
+                                    <p class="bg-danger text-white">{{ message }}</p>
+                                    {% endif %}
 
                                     <div class="form-outline mb-4">
                                         <input name="username" type="text" id="form2Example17"

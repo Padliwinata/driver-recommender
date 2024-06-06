@@ -15,20 +15,25 @@
     </div>
     <table class="table">
         <thead>
-            <tr>
+            <tr align="center">
                 <th>ID Pegawai</th>
                 <th>Nama</th>
-                <th>Action</th>
+                <th colspan="2">Action</th>
             </tr>
         </thead>
         <tbody id="recordList">
             {% for var in data %}
-            <tr>
+            <tr align="center">
                 <td>{{ var.id_pegawai }}</td>
                 <td>{{ var.nama }}</td>
                 <td>
                     <a href="{% url 'actual-update-employee' var.id_pegawai %}" class="btn btn-success btn-sm delete-btn">
                         Update
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'delete-employee' var.id_pegawai %}" class="btn btn-danger btn-sm delete-btn">
+                        Delete
                     </a>
                 </td>
             </tr>

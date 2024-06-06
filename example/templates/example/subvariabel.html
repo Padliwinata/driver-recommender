@@ -21,7 +21,7 @@
                 <th>Nama</th>
                 <th>Faktor</th>
                 <th>Standar</th>
-                <th>Action</th>
+<!--                <th>Action</th>-->
             </tr>
         </thead>
         <tbody id="recordList">
@@ -32,11 +32,11 @@
                 <td>{{ var.nama }}</td>
                 <td>{{ var.faktor }}</td>
                 <td>{{ var.standar }}</td>
-                <td>
-                    <a href="{% url 'delete-subvariabel' var.kode %}" class="btn btn-danger btn-sm delete-btn">
-                        Delete
-                    </a>
-                </td>
+<!--                <td>-->
+<!--                    <a href="{% url 'delete-subvariabel' var.kode %}" class="btn btn-danger btn-sm delete-btn">-->
+<!--                        Delete-->
+<!--                    </a>-->
+<!--                </td>-->
             </tr>
             {% endfor %}
         </tbody>
