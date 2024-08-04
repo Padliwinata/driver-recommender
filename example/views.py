@@ -483,6 +483,9 @@ def login_view(request):
                 user = authenticate(request, username='admin', password='admin')
                 login(request, user)
                 return redirect('index')
+            else:
+                request.session['message'] = 'Username & password tidak sesuai'
+                return redirect('login')
         except KeyError:
             request.session['message'] = 'Username & password tidak sesuai'
             return redirect('login')
