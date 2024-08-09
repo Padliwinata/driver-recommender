@@ -17,7 +17,7 @@
     {% csrf_token %}
     <div class="form-group">
         <label for="kode">Kode:</label>
-        <input type="text" class="form-control" id="kode" name="kode" required {% if data %}disabled value="{{data.kode}}"{%endif%}>
+        <input type="text" class="form-control" id="kode" name="kode" required {% if data %}readonly value="{{data.kode}}"{%endif%}>
     </div>
 
     <div class="form-group">
@@ -59,7 +59,9 @@
             <option value="4" {% if data and data.standar == '4' %}selected{% endif %}>4</option>
         </select>
     </div>
-
+        {% if data %}
+        <input type="hidden" name="update" value="yes">
+        {%endif%}
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 

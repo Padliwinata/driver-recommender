@@ -322,7 +322,15 @@ def create_subvariabel(request):
         record = SubVariabel.objects.filter(kode=kode)
 
         if record:
-            request.session['message'] = 'Sub variabel sudah digunakan'
+            if not request.POST.get('update'):
+                request.session['message'] = 'Sub variabel sudah digunakan'
+                return redirect(reverse('subvariabel'))
+            data = record.first()
+            data.variabel = variabel_sub
+            data.nama = nama
+            data.faktor = faktor
+            data.standar = standar
+            data.save()
             return redirect(reverse('subvariabel'))
             # data = record.first()
             # data.variabel = variabel_sub
