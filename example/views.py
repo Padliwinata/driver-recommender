@@ -506,5 +506,5 @@ def add_user(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        if append_to_json(file_name, username, password):
-            return redirect('login')
+        append_to_json(file_name, username, password)
+        return redirect('login')
