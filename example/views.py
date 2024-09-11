@@ -167,6 +167,7 @@ def skor(request):
 def detail_skor(request, id_pegawai):
     if request.method == 'GET':
         data = defaultdict(dict)
+        gap = defaultdict(dict)
         skor_pengelompokkan = defaultdict(dict)
         skor_per_variabel = defaultdict(dict)
 
@@ -202,9 +203,11 @@ def detail_skor(request, id_pegawai):
                 normal = 2.5
 
             try:
+                gap[f'{angka.sub_variabel.variabel.nama}'][f'{angka.sub_variabel.faktor}'].append(selisih)
                 data[f'{angka.sub_variabel.variabel.nama}'][
                     f'{angka.sub_variabel.faktor}'].append(normal)
             except KeyError:
+                gap[f'{angka.sub_variabel.variabel.nama}'][f'{angka.sub_variabel.faktor}'] = [selisih]
                 data[f'{angka.sub_variabel.variabel.nama}'][
                     f'{angka.sub_variabel.faktor}'] = [normal]
 
@@ -242,7 +245,8 @@ def detail_skor(request, id_pegawai):
                       {'skor_raw': skor_raw, 'skor_normalisasi': dict(skor_normalisasi),
                        'skor_pengelompokkan': dict(skor_pengelompokkan),
                        'skor_per_variabel': skor_per_variabel, 'skor_persentase': skor_persentase,
-                       'skor_final': sum(skor_persentase)})
+                       'skor_final': sum(skor_persentase),
+                       'gap': dict(gap)})
 
 
 @login_required

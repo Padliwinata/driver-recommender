@@ -40,6 +40,37 @@
     </div>
     <div class="row">
         <div class="col">
+            <h4 class="mt-5">Skor GAP</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Variabel</th>
+                    <th>Faktor</th>
+                    <th>Skor</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, val in gap.items %}
+                <tr>
+                    <td rowspan="2">{{ key }}</td>
+                    <td>CORE</td>
+                    <td>{{ val.CORE }}</td>
+                </tr>
+                <tr>
+                    <td>SECONDARY</td>
+                    <td>{{ val.SECONDARY }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <h4 class="mt-5">Skor Normalisasi</h4>
         </div>
     </div>
